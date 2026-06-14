@@ -1,0 +1,251 @@
+/* --- CSS VARIABLES & THEME PRESETS --- */
+/* Colors selected for visibility: Green=Income, Red=Expense, Yellow=Alerts */
+:root {
+    --bg-color: #f4f6f9;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --sidebar-bg: #1e1b4b; /* Dark indigo for premium, clean contrast */
+    
+    --color-income: #16a34a;   /* Bright Green */
+    --color-expense: #dc2626;  /* High-visibility Red */
+    --color-warning: #ca8a04;  /* Clear, dark Yellow */
+    --color-remaining: #2563eb;/* Accessible Blue */
+    
+    --white: #ffffff;
+    --border-radius: 12px;
+}
+
+/* --- BASE STYLES & RESET --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+/* --- DASHBOARD LAYOUT HIERARCHY --- */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- SIDEBAR DESIGN --- */
+.sidebar {
+    width: 260px;
+    background-color: var(--sidebar-bg);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1.5rem;
+    position: fixed;
+    height: 100vh;
+    z-index: 10;
+}
+
+.logo-area h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.logo-area span {
+    font-size: 0.85rem;
+    color: #93c5fd;
+    text-transform: uppercase;
+}
+
+.nav-links {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nav-links a {
+    color: #c7d2fe;
+    text-decoration: none;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+}
+
+.sidebar-footer {
+    margin-top: auto;
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1rem;
+}
+
+/* --- MAIN PANEL CONTENT --- */
+.main-content {
+    flex: 1;
+    margin-left: 260px; /* Offset for the sticky sidebar */
+    padding: 2rem;
+}
+
+/* --- SECTION 1: SUMMARY CARD LAYOUT --- */
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.card {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border-left: 6px solid #cbd5e1;
+}
+
+/* Color Coding Borders based on Financial Significance */
+.card-income { border-left-color: var(--color-income); }
+.card-expense { border-left-color: var(--color-expense); }
+.card-remaining { border-left-color: var(--color-remaining); }
+.card-warning { border-left-color: var(--color-warning); background-color: #fef9c3; }
+
+.card h3 {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.card .amount {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.card-status {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+/* --- SPLIT COLUMNS SECTION --- */
+.details-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* --- GLOBAL WHITE DATA BLOCKS --- */
+.content-block {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 0.75rem;
+}
+
+.block-header h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+/* --- SCANNABLE SYSTEM TABLES --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th {
+    padding: 0.75rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+td {
+    padding: 1rem 0.75rem;
+    font-size: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+/* Status Badges */
+.badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+.badge-danger { background-color: #fee2e2; color: var(--color-expense); }
+.badge-success { background-color: #dcfce7; color: var(--color-income); }
+
+/* Trend Indicator UI */
+.trend-indicator { font-size: 0.85rem; font-weight: 600; }
+.trend-up { color: var(--color-income); }
+
+/* --- INSIGHTS LIST VIEW --- */
+.insights-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.insights-list li {
+    padding: 0.75rem 1rem;
+    background-color: #f8fafc;
+    border-radius: 8px;
+    border-left: 4px solid var(--color-remaining);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+/* --- BREAKPOINTS FOR MOBILE RESPONSIVENESS --- */
+@media (max-width: 992px) {
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 1rem;
+    }
+    .nav-links {
+        flex-direction: row;
+        overflow-x: auto;
+        margin-top: 1rem;
+    }
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+}
