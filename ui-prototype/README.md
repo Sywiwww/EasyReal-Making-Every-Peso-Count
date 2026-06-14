@@ -8,3 +8,5 @@ Make sure these three files sit side-by-side inside the exact same project root 
 ├── index.html
 ├── style.css
 └── script.js
+
+Got confused in pushing and updating 
