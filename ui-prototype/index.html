@@ -1,154 +1,3 @@
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EasyReal - Sari-Sari Store & Household Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <div class="dashboard-container">
-        
-        <aside class="sidebar">
-            <div class="logo-area">
-                <h2>EasyReal</h2>
-                <span>Store & Home</span>
-            </div>
-            <nav class="nav-links">
-                <a href="#" class="active" onclick="switchTab('all')">🏠 Pangkalahatan (All)</a>
-                <a href="#" onclick="switchTab('store')">🏪 Tindahan (Store)</a>
-                <a href="#" onclick="switchTab('household')">🏡 Bahay (Household)</a>
-                <a href="#" onclick="switchTab('loans')">🏦 Utang at Loans</a>
-            </nav>
-            <div class="sidebar-footer">
-                <p>Welcome, Tita Paz! 👋</p>
-            </div>
-        </aside>
-
-        <main class="main-content">
-            
-            <section class="summary-grid">
-                <div class="card card-income">
-                    <h3>Kita Ngayong Buwan (Income)</h3>
-                    <p class="amount" id="total-income">₱0.00</p>
-                    <span class="card-status">🟢 Pera na Pumasok</span>
-                </div>
-                
-                <div class="card card-expense">
-                    <h3>Gasta Ngayong Buwan (Expenses)</h3>
-                    <p class="amount" id="total-expenses">₱0.00</p>
-                    <span class="card-status">🔴 Pera na Lumabas</span>
-                </div>
-
-                <div class="card card-remaining">
-                    <h3>Natirang Pera (Savings)</h3>
-                    <p class="amount" id="remaining-money">₱0.00</p>
-                    <span class="card-status">🔵 Kasalukuyang Hawak</span>
-                </div>
-
-                <div class="card card-warning">
-                    <h3>Susunod na Bayarin (Due Next)</h3>
-                    <p class="amount" id="next-due-amount">₱0.00</p>
-                    <span class="card-status" id="next-due-date">Petsa: --/--/--</span>
-                </div>
-            </section>
-
-            <div class="details-grid">
-                
-                <div class="left-column">
-                    
-                    <div class="content-block table-block" data-section="store">
-                        <div class="block-header">
-                            <h2>🏪 Benta sa Tindahan (Daily Sales)</h2>
-                            <span class="trend-indicator trend-up" id="store-trend">▲ Maganda ang benta kumpara nakaraan</span>
-                        </div>
-                        <table>
-                            <thead>
-                                border-bottom
-                                <tr>
-                                    <th>Petsa (Date)</th>
-                                    <th>Kabuuang Kita (Amount)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="store-income-table">
-                                </tbody>
-                        </table>
-                    </div>
-
-                    <div class="content-block table-block" data-section="store">
-                        <div class="block-header">
-                            <h2>📦 Gastos sa Pag-restock (Inventory)</h2>
-                        </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Petsa</th>
-                                    <th>Paninda / Item</th>
-                                    <th>Halaga (Cost)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="store-expense-table">
-                                </tbody>
-                        </table>
-                    </div>
-
-                    <div class="content-block table-block" data-section="household">
-                        <div class="block-header">
-                            <h2>🏡 Gastos sa Bahay (Household Expenses)</h2>
-                        </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Kategorya</th>
-                                    <th>Detalye</th>
-                                    <th>Magkano</th>
-                                </tr>
-                            </thead>
-                            <tbody id="household-expense-table">
-                                </tbody>
-                        </table>
-                    </div>
-
-                    <div class="content-block table-block" data-section="loans">
-                        <div class="block-header">
-                            <h2>🏦 Listahan ng Loans at Utang</h2>
-                            <span class="badge badge-danger" id="unpaid-loans-count">0 Unpaid</span>
-                        </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Bangko / Pangalan</th>
-                                    <th>Babayaran</th>
-                                    <th>Due Date</th>
-                                    <th>Tawagan (Contact)</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="loans-table">
-                                </tbody>
-                        </table>
-                    </div>
-
-                </div>
-
-                <aside class="right-column">
-                    <div class="content-block insights-block">
-                        <h2>💡 Pagsusuri (Simple Insights)</h2>
-                        <ul class="insights-list" id="insights-container">
-                            </ul>
-                    </div>
-                </aside>
-
-            </div>
-        </main>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-=======
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -217,14 +66,12 @@
                         </div>
                         <table>
                             <thead>
-                                border-bottom
                                 <tr>
                                     <th>Petsa (Date)</th>
                                     <th>Kabuuang Kita (Amount)</th>
                                 </tr>
                             </thead>
-                            <tbody id="store-income-table">
-                                </tbody>
+                            <tbody id="store-income-table"></tbody>
                         </table>
                     </div>
 
@@ -240,8 +87,7 @@
                                     <th>Halaga (Cost)</th>
                                 </tr>
                             </thead>
-                            <tbody id="store-expense-table">
-                                </tbody>
+                            <tbody id="store-expense-table"></tbody>
                         </table>
                     </div>
 
@@ -257,8 +103,7 @@
                                     <th>Magkano</th>
                                 </tr>
                             </thead>
-                            <tbody id="household-expense-table">
-                                </tbody>
+                            <tbody id="household-expense-table"></tbody>
                         </table>
                     </div>
 
@@ -277,8 +122,7 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody id="loans-table">
-                                </tbody>
+                            <tbody id="loans-table"></tbody>
                         </table>
                     </div>
 
@@ -287,8 +131,7 @@
                 <aside class="right-column">
                     <div class="content-block insights-block">
                         <h2>💡 Pagsusuri (Simple Insights)</h2>
-                        <ul class="insights-list" id="insights-container">
-                            </ul>
+                        <ul class="insights-list" id="insights-container"></ul>
                     </div>
                 </aside>
 
@@ -298,5 +141,4 @@
 
     <script src="script.js"></script>
 </body>
->>>>>>> 468737dd6505765ece5dd6c172f81c5b2bc6a3b3
 </html>
