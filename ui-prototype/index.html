@@ -21,6 +21,7 @@
                 <a href="#" onclick="switchTab('store')">🏪 Tindahan (Store)</a>
                 <a href="#" onclick="switchTab('household')">🏡 Bahay (Household)</a>
                 <a href="#" onclick="switchTab('loans')">🏦 Utang at Loans</a>
+                <a href="#" onclick="switchTab('calculator')">🧮 Kalkulator</a>
             </nav>
             <div class="sidebar-footer">
                 <p>Welcome, Nanay! 👋</p>
@@ -58,6 +59,38 @@
             <div class="details-grid">
                 
                 <div class="left-column">
+                    
+                    <div class="content-block calc-block" data-section="calculator">
+                        <div class="block-header">
+                            <h2>🧮 Mabilisang Kalkulator (Quick Calc)</h2>
+                        </div>
+                        <div class="calculator-container">
+                            <input type="text" id="calc-screen" class="calc-screen" readonly value="0">
+                            <div class="calc-buttons">
+                                <button class="btn btn-clear" onclick="clearCalc()">C</button>
+                                <button class="btn btn-op" onclick="pressOp('/')">÷</button>
+                                <button class="btn btn-op" onclick="pressOp('*')">×</button>
+                                <button class="btn btn-op" onclick="pressOp('-')">−</button>
+                                
+                                <button class="btn" onclick="pressNum('7')">7</button>
+                                <button class="btn" onclick="pressNum('8')">8</button>
+                                <button class="btn" onclick="pressNum('9')">9</button>
+                                <button class="btn btn-op" onclick="pressOp('+')">+</button>
+                                
+                                <button class="btn" onclick="pressNum('4')">4</button>
+                                <button class="btn" onclick="pressNum('5')">5</button>
+                                <button class="btn" onclick="pressNum('6')">6</button>
+                                <button class="btn btn-equal" onclick="calculateResult()">=</button>
+                                
+                                <button class="btn" onclick="pressNum('1')">1</button>
+                                <button class="btn" onclick="pressNum('2')">2</button>
+                                <button class="btn" onclick="pressNum('3')">3</button>
+                                <button class="btn" onclick="pressNum('0')">0</button>
+                                
+                                <button class="btn" onclick="pressNum('.')">.</button>
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="content-block table-block" data-section="store">
                         <div class="block-header">

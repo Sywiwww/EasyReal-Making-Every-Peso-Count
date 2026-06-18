@@ -150,24 +150,73 @@ function renderInsights(unpaidLoans, householdCost, income) {
 
 /**
  * SIDEBAR TAB NAVIGATION SYSTEM
- * Safely hides/shows section blocks based on user navigation options
  */
 function switchTab(tabName) {
-    // Manage anchor links highlight state
     const links = document.querySelectorAll(".nav-links a");
     links.forEach(link => link.classList.remove("active"));
     
-    if (event && event.currentTarget) {
-        event.currentTarget.classList.add("active");
+    if (window.event && window.event.currentTarget) {
+        window.event.currentTarget.classList.add("active");
     }
 
     const blocks = document.querySelectorAll(".content-block");
     blocks.forEach(block => {
         const sectionAttr = block.getAttribute("data-section");
-        if (tabName === "all" || sectionAttr === tabName || block.classList.contains("insights-block")) {
+        
+        // General behavior: Hide calculator on 'all' view to prevent crowding tables
+        if (tabName === "all") {
+            if (sectionAttr === "calculator") {
+                block.style.display = "none";
+            } else {
+                block.style.display = "block";
+            }
+        } else if (sectionAttr === tabName || block.classList.contains("insights-block")) {
             block.style.display = "block";
         } else {
             block.style.display = "none";
         }
     });
+}
+
+/**
+ * NATIVE CALCULATOR ENGINE ENGINE LOGIC
+ */
+let calcExpression = "";
+
+function pressNum(num) {
+    const screen = document.getElementById("calc-screen");
+    if (screen.value === "0" && num !== ".") {
+        calcExpression = num;
+    } else {
+        calcExpression += num;
+    }
+    screen.value = calcExpression;
+}
+
+function pressOp(op) {
+    const screen = document.getElementById("calc-screen");
+    // Ensure we don't chain double operators accidentally
+    if (calcExpression !== "" && !["+","-","*","/"].includes(calcExpression.slice(-1))) {
+        calcExpression += op;
+        screen.value = calcExpression;
+    }
+}
+
+function clearCalc() {
+    calcExpression = "";
+    document.getElementById("calc-screen").value = "0";
+}
+
+function calculateResult() {
+    const screen = document.getElementById("calc-screen");
+    if (calcExpression === "") return;
+    try {
+        // Safe standard token computation implementation mapping
+        const result = new Function(`return ${calcExpression}`)();
+        calcExpression = String(result);
+        screen.value = calcExpression;
+    } catch (e) {
+        screen.value = "Error";
+        calcExpression = "";
+    }
 }
