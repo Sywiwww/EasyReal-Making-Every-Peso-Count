@@ -1,9 +1,6 @@
 /**
  * =========================================================================
  * DATABASE READY ARCHITECTURE
- * * To integrate with a backend API later:
- * Replace this object container 'mockDatabase' with a native fetch() request.
- * e.g., const response = await fetch('/api/dashboard-data');
  * =========================================================================
  */
 
@@ -32,35 +29,27 @@ const mockDatabase = {
 // --- INITIAL ENGINE TRIGGER ---
 document.addEventListener("DOMContentLoaded", () => {
     calculateAndRenderDashboard();
+    initDraggableCalculator();
 });
 
 /**
  * CORE LOGIC ENGINE
- * Calculates metrics and populates elements.
  */
 function calculateAndRenderDashboard() {
-    
-    // 1. Calculations Using Functional Arrays (Matches typical backend query structures)
     const totalStoreIncome = mockDatabase.storeIncome.reduce((acc, row) => acc + row.amount, 0);
-    
     const totalStoreExpense = mockDatabase.storeExpenses.reduce((acc, row) => acc + row.amount, 0);
     const totalHouseholdExpense = mockDatabase.householdExpenses.reduce((acc, row) => acc + row.amount, 0);
     const totalCombinedExpenses = totalStoreExpense + totalHouseholdExpense;
-    
     const remainingMoney = totalStoreIncome - totalCombinedExpenses;
 
-    // Filter Unpaid Loans
     const unpaidLoans = mockDatabase.loans.filter(loan => loan.status === "Unpaid");
     
-    // Find Next Closest Due Loan
     let nextDueLoan = { amountDue: 0, dueDate: "Walang Due" };
     if (unpaidLoans.length > 0) {
-        // Sort by earliest ascending order date
         const sortedLoans = [...unpaidLoans].sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
         nextDueLoan = sortedLoans[0];
     }
 
-    // 2. Render Values to Top Summary Metrics Cards
     document.getElementById("total-income").innerText = formatPHP(totalStoreIncome);
     document.getElementById("total-expenses").innerText = formatPHP(totalCombinedExpenses);
     document.getElementById("remaining-money").innerText = formatPHP(remainingMoney);
@@ -68,22 +57,17 @@ function calculateAndRenderDashboard() {
     document.getElementById("next-due-date").innerText = `Petsa: ${nextDueLoan.dueDate}`;
     document.getElementById("unpaid-loans-count").innerText = `${unpaidLoans.length} Unpaid`;
 
-    // 3. Dynamic Sub-Table Content Generators
     renderStoreIncomeTable();
     renderStoreExpenseTable();
     renderHouseholdExpenseTable();
     renderLoansTable();
-
-    // 4. Generate Simple Analytical Text Insights
     renderInsights(unpaidLoans, totalHouseholdExpense, totalStoreIncome);
 }
 
-/* --- FORMAT HELPER --- */
 function formatPHP(value) {
     return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(value);
 }
 
-/* --- DOM INJECTION METHODS --- */
 function renderStoreIncomeTable() {
     const tbody = document.getElementById("store-income-table");
     tbody.innerHTML = mockDatabase.storeIncome.map(row => `
@@ -134,17 +118,13 @@ function renderLoansTable() {
 
 function renderInsights(unpaidLoans, householdCost, income) {
     const container = document.getElementById("insights-container");
-    let messages = [
-        "📈 Maganda ang pasok ng benta ng iyong tindahan ngayong linggo.",
-    ];
-
+    let messages = ["残留 Maganda ang pasok ng benta ng iyong tindahan ngayong linggo."];
     if (unpaidLoans.length > 0) {
         messages.push(`⚠️ Mayroon kang ${unpaidLoans.length} bayarin o utang na kailangang i-settle sa lalong madaling panahon.`);
     }
     if (householdCost > (income * 0.4)) {
         messages.push("💡 Paalala: Medyo malaki ang nagastos sa pambahay ngayong buwan. Bawasan ang mga hindi importanteng binibili.");
     }
-
     container.innerHTML = messages.map(msg => `<li>${msg}</li>`).join('');
 }
 
@@ -162,15 +142,7 @@ function switchTab(tabName) {
     const blocks = document.querySelectorAll(".content-block");
     blocks.forEach(block => {
         const sectionAttr = block.getAttribute("data-section");
-        
-        // General behavior: Hide calculator on 'all' view to prevent crowding tables
-        if (tabName === "all") {
-            if (sectionAttr === "calculator") {
-                block.style.display = "none";
-            } else {
-                block.style.display = "block";
-            }
-        } else if (sectionAttr === tabName || block.classList.contains("insights-block")) {
+        if (tabName === "all" || sectionAttr === tabName || block.classList.contains("insights-block")) {
             block.style.display = "block";
         } else {
             block.style.display = "none";
@@ -179,9 +151,18 @@ function switchTab(tabName) {
 }
 
 /**
- * NATIVE CALCULATOR ENGINE ENGINE LOGIC
+ * FLOATING POP-OUT & DRAG ENGINE
  */
 let calcExpression = "";
+
+function toggleCalculator() {
+    const calc = document.getElementById("floating-calc");
+    if (calc.style.display === "block") {
+        calc.style.display = "none";
+    } else {
+        calc.style.display = "block";
+    }
+}
 
 function pressNum(num) {
     const screen = document.getElementById("calc-screen");
@@ -195,7 +176,6 @@ function pressNum(num) {
 
 function pressOp(op) {
     const screen = document.getElementById("calc-screen");
-    // Ensure we don't chain double operators accidentally
     if (calcExpression !== "" && !["+","-","*","/"].includes(calcExpression.slice(-1))) {
         calcExpression += op;
         screen.value = calcExpression;
@@ -211,12 +191,42 @@ function calculateResult() {
     const screen = document.getElementById("calc-screen");
     if (calcExpression === "") return;
     try {
-        // Safe standard token computation implementation mapping
         const result = new Function(`return ${calcExpression}`)();
         calcExpression = String(result);
         screen.value = calcExpression;
     } catch (e) {
         screen.value = "Error";
         calcExpression = "";
+    }
+}
+
+function initDraggableCalculator() {
+    const calc = document.getElementById("floating-calc");
+    const header = document.getElementById("floating-calc-header");
+    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+    header.onmousedown = dragMouseDown;
+
+    function dragMouseDown(e) {
+        e.preventDefault();
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        e.preventDefault();
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        calc.style.top = (calc.offsetTop - pos2) + "px";
+        calc.style.left = (calc.offsetLeft - pos1) + "px";
+    }
+
+    function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
     }
 }
